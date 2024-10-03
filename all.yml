@@ -2,4 +2,5 @@
 - name: Leader
   hosts: leader
   roles:
-    - preconfig
+    - role: preconfig
+      tags: preconfig

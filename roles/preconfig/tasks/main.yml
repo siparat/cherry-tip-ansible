@@ -1,0 +1,65 @@
+---
+- name: Установка Docker
+  become: true
+  block:
+    - name: Установка доп. пакетов
+      apt:
+        name:
+          - ca-certificates
+          - curl
+        update_cache: true
+        state: present
+
+    - name: Создание категории для ключей с правами
+      file:
+        path: /etc/apt/keyrings
+        state: directory
+        mode: "0755"
+        owner: root
+        group: root
+
+    - name: Установка ключа Docker
+      get_url:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        mode: "0755"
+        dest: /etc/apt/keyrings/docker.asc
+
+    - name: Добавление ключа из файла
+      apt_key:
+        file: /etc/apt/keyrings/docker.asc
+        state: present
+
+    - name: Получение архитектуры системы
+      command: dpkg --print-architecture
+      register: dpkg_architecture
+
+    - name: Добавление репозитория
+      apt_repository:
+        repo: >
+          deb [arch={{ dpkg_architecture.stdout }} signed-by=/etc/apt/keyrings/docker.asc]
+          https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
+        state: present
+        filename: docker
+        update_cache: true
+
+    - name: Установка Docker-ce
+      apt:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+          - docker-buildx-plugin
+          - docker-compose-plugin
+        state: present
+        update_cache: true
+
+    - name: Проверка на успешную установку Docker
+      service:
+        name: docker
+        state: restarted
+        enabled: true
+
+    - name: Добавление в группу Docker
+      user:
+        name: "{{ ansible_user }}"
+        group: docker
