@@ -1,0 +1,3 @@
+ansible_python_interpreter: /venv/bin/python3
+
+leader_ansible_host: "{{ hostvars[groups['leader'][0]].ansible_host }}"

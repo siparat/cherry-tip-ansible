@@ -6,6 +6,8 @@
       apt:
         name:
           - ca-certificates
+          - python3-pip
+          - python3-venv
           - curl
         update_cache: true
         state: present
@@ -63,3 +65,19 @@
       user:
         name: "{{ ansible_user }}"
         group: docker
+
+- name: Настройка и установка пакетов pip
+  block:
+    - name: Создание виртуальной среды python
+      command: "python3 -m venv /venv"
+
+    - name: Активация виртуального окружения python
+      shell: "source /{{ ansible_user }}/.bashrc && source /venv/bin/activate"
+      args:
+        executable: /bin/bash
+
+    - name: Установка пакета docker для python
+      pip:
+        name: docker
+        state: present
+        virtualenv: "/venv"
