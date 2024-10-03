@@ -81,3 +81,10 @@
         name: docker
         state: present
         virtualenv: "/venv"
+
+- name: Создание директорий
+  file:
+    path: "{{ item.value }}"
+    mode: "0664"
+    state: directory
+  loop: "{{ mount_folders | dict2items }}"

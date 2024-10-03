@@ -1,0 +1,17 @@
+---
+- name: Выкладка registry
+  community.docker.docker_swarm_service:
+    image: registry:latest
+    name: registry
+    placement:
+      constraints:
+        - node.labels.registry == true
+    publish:
+      - published_port: 5000
+        target_port: 5000
+    mounts:
+      - type: bind
+        source: "{{ mount_folders.registry }}"
+        target: /var/lib/registry
+    env:
+      REGISTRY_HTTP_ADDR: 0.0.0.0:5000
