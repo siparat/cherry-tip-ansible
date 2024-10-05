@@ -1,0 +1,1 @@
+build_services: "{{ services | rejectattr('name', 'in', non_build_services) }}"
