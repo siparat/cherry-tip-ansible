@@ -1,0 +1,22 @@
+---
+- name: "{{ service.name }} : Выкладка сервиса"
+  community.docker.docker_swarm_service:
+    image: "{{ service.image }}"
+    name: "{{ service.name }}"
+    placement:
+      constraints:
+        - node.labels.database == true
+    networks:
+      - "{{ network_name }}"
+    mounts:
+      - type: bind
+        source: "{{ mount_folders.database }}"
+        target: /var/lib/postgresql/data
+    env:
+      POSTGRES_USER: "{{ env.database.user }}"
+      POSTGRES_DB: "{{ env.database.db_name }}"
+      POSTGRES_PASSWORD: "{{ env.database.password }}"
+    publish:
+      - target_port: 5432
+        published_port: "{{ env.database.port }}"
+        mode: ingress

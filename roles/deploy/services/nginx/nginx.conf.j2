@@ -1,0 +1,28 @@
+http {
+	server {
+		listen 80;
+		server_name {{ env.domain }};
+
+		return 301 {{ env.https_host }}$request_uri;
+	}
+
+	server {
+		listen 443 ssl;
+		ssl_certificate /etc/letsencrypt/live/{{ env.domain }}/fullchain.pem;
+		ssl_certificate_key /etc/letsencrypt/live/{{ env.domain }}/privkey.pem;
+		server_name {{ env.domain }};
+
+		location /v1 {
+			proxy_pass http://api:3000/v1;
+		}
+
+		location /uploads {
+			proxy_pass http://api:3000/uploads;
+		}
+	}
+}
+
+
+events {
+	worker_connections 1024;
+}

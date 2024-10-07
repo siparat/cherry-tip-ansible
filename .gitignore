@@ -1,2 +1,4 @@
 group_vars/vault.yml
+/**/fullchain.pem
+/**/privkey.pem
 /.vscode

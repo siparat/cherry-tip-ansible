@@ -4,10 +4,14 @@ leader_ansible_host: "{{ hostvars[groups['leader'][0]].ansible_host }}"
 
 mount_folders:
   registry: '/etc/registry'
+  database: '/etc/database'
+  uploads: '/etc/uploads'
+
+network_name: app_network
 
 services:
   - name: api
-    image: localhost:5000/api:latest
+    image: 127.0.0.1:5000/api:latest
     repo: https://github.com/siparat/cherry-tip
     dest: /root/api
     

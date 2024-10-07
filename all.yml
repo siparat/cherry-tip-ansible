@@ -16,6 +16,8 @@
       tags: registry_init
     - role: build
       tags: build
+    - role: deploy
+      tags: deploy
 
 - name: Managers
   hosts: managers
