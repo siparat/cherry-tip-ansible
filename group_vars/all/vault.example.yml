@@ -1,2 +1,22 @@
 host_passwords:
   s1: string
+  s2: string
+
+env:
+  domain: domain.ru
+  https_host: https://domain.ru
+  api_host: https://domain.ru/v1
+
+  database:
+    user: user
+    password: password
+    host: database
+    port: 5432
+    db_name: main
+
+  api:
+    secret: string
+    google_client_id: string
+    google_client_key: string
+    vk_client_id: string
+    vk_client_key: string
