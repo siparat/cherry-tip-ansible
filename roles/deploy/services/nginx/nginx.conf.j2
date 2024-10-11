@@ -19,6 +19,10 @@ http {
 		location /uploads {
 			proxy_pass http://api:3000/uploads;
 		}
+
+		location /assets {
+			proxy_pass http://api:3000/assets;
+		}
 	}
 }
 
